@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <title>
+  Audit WiFi avec Kali Linux : Guide Pratique · Cybersécurité
+</title>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+
+
+
+
+<meta name="author" content="Marcel BATELA">
+<meta name="description" content="
+  📡 Audit WiFi avec Kali Linux
+  
+    
+    Link to heading
+  
+
+
+&ldquo;La sécurité d&rsquo;un réseau sans fil commence par sa compréhension.&rdquo;
+
+
+
+  🔍 Introduction
+  
+    
+    Link to heading
+  
+
+L&rsquo;audit WiFi est une étape essentielle pour sécuriser vos réseaux sans fil. Avec Kali Linux, nous allons explorer les techniques d&rsquo;analyse et de sécurisation des réseaux WiFi.
+Dans cet article, je vous partage les bases de l&rsquo;audit WiFi avec les outils les plus utilisés par les professionnels de la cybersécurité.">
+<meta name="keywords" content="informatique,cybersécurité,réseau,linux,windows,technologies,cve">
+
+
+
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="Audit WiFi avec Kali Linux : Guide Pratique">
+	<meta name="twitter:description" content="📡 Audit WiFi avec Kali Linux Link to heading “La sécurité d’un réseau sans fil commence par sa compréhension.”
+🔍 Introduction Link to heading L’audit WiFi est une étape essentielle pour sécuriser vos réseaux sans fil. Avec Kali Linux, nous allons explorer les techniques d’analyse et de sécurisation des réseaux WiFi.
+Dans cet article, je vous partage les bases de l’audit WiFi avec les outils les plus utilisés par les professionnels de la cybersécurité.">
+
+<meta property="og:url" content="http://localhost:1313/posts/audit-wifi-avec-kali-linux/">
+	<meta property="og:site_name" content="Cybersécurité">
+	<meta property="og:title" content="Audit WiFi avec Kali Linux : Guide Pratique">
+	<meta property="og:description" content="📡 Audit WiFi avec Kali Linux Link to heading “La sécurité d’un réseau sans fil commence par sa compréhension.”
+🔍 Introduction Link to heading L’audit WiFi est une étape essentielle pour sécuriser vos réseaux sans fil. Avec Kali Linux, nous allons explorer les techniques d’analyse et de sécurisation des réseaux WiFi.
+Dans cet article, je vous partage les bases de l’audit WiFi avec les outils les plus utilisés par les professionnels de la cybersécurité.">
+	<meta property="og:locale" content="fr">
+	<meta property="og:type" content="article">
+		<meta property="article:section" content="posts">
+		<meta property="article:published_time" content="2026-08-16T00:00:00+00:00">
+		<meta property="article:modified_time" content="2026-08-16T00:00:00+00:00">
+		<meta property="article:tag" content="Wifi">
+		<meta property="article:tag" content="Kali">
+		<meta property="article:tag" content="Pentest">
+		<meta property="article:tag" content="Sécurité">
+		<meta property="article:tag" content="Réseau">
+
+
+
+
+<link rel="canonical" href="http://localhost:1313/posts/audit-wifi-avec-kali-linux/">
+
+
+<link rel="preload" href="/fonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
+
+
+  
+  
+  <link rel="stylesheet" href="/css/coder.css" media="screen">
+
+
+
+
+
+
+  
+    
+    
+    <link rel="stylesheet" href="/css/coder-dark.css" media="screen">
+  
+
+
+
+ 
+
+
+
+
+<link rel="icon" type="image/svg+xml" href="/images/favicon.svg" sizes="any">
+<link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
+
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+
+
+
+</head>
+
+
+
+
+
+
+<body class="preload-transitions colorscheme-auto">
+  
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+  <main class="wrapper">
+    <nav class="navigation">
+  <section class="container">
+    
+    <a class="navigation-title" href="http://localhost:1313/">
+      Cybersécurité
+    </a>
+    
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fa-solid fa-bars fa-fw" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/about/">A Propos</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/posts/">Blog</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/videos/">Vidéos</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/projects/">Projets</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/contact/">Contactez-moi</a>
+            </li>
+          
+        
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+    <div class="content">
+      
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">
+            <a class="title-link" href="http://localhost:1313/posts/audit-wifi-avec-kali-linux/">
+              Audit WiFi avec Kali Linux : Guide Pratique
+            </a>
+          </h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fa-solid fa-calendar" aria-hidden="true"></i>
+              <time datetime="2026-08-16T00:00:00Z">
+                Décembre 160, 16168
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fa-solid fa-clock" aria-hidden="true"></i>
+              3 minutes de lecture
+            </span>
+          </div>
+          
+          <div class="categories">
+  <i class="fa-solid fa-folder" aria-hidden="true"></i>
+    <a href="/categories/cybers%C3%A9curit%C3%A9/">Cybersécurité</a>
+      <span class="separator">•</span>
+    <a href="/categories/pentest/">Pentest</a></div>
+
+          <div class="tags">
+  <i class="fa-solid fa-tag" aria-hidden="true"></i>
+    <span class="tag">
+      <a href="/tags/wifi/">Wifi</a>
+    </span>
+      <span class="separator">•</span>
+    <span class="tag">
+      <a href="/tags/kali/">Kali</a>
+    </span>
+      <span class="separator">•</span>
+    <span class="tag">
+      <a href="/tags/pentest/">Pentest</a>
+    </span>
+      <span class="separator">•</span>
+    <span class="tag">
+      <a href="/tags/s%C3%A9curit%C3%A9/">Sécurité</a>
+    </span>
+      <span class="separator">•</span>
+    <span class="tag">
+      <a href="/tags/r%C3%A9seau/">Réseau</a>
+    </span></div>
+
+        </div>
+      </header>
+
+      
+
+
+      <div class="post-content">
+        
+        <h1 id="-audit-wifi-avec-kali-linux">
+  📡 Audit WiFi avec Kali Linux
+  <a class="heading-link" href="#-audit-wifi-avec-kali-linux">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h1>
+<blockquote>
+<p><em>&ldquo;La sécurité d&rsquo;un réseau sans fil commence par sa compréhension.&rdquo;</em></p>
+</blockquote>
+<hr>
+<h2 id="-introduction">
+  🔍 Introduction
+  <a class="heading-link" href="#-introduction">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<p>L&rsquo;<strong>audit WiFi</strong> est une étape essentielle pour sécuriser vos réseaux sans fil. Avec <strong>Kali Linux</strong>, nous allons explorer les techniques d&rsquo;analyse et de sécurisation des réseaux WiFi.</p>
+<p>Dans cet article, je vous partage les bases de l&rsquo;audit WiFi avec les outils les plus utilisés par les professionnels de la cybersécurité.</p>
+<hr>
+<h2 id="-prérequis">
+  🛠️ Prérequis
+  <a class="heading-link" href="#-pr%c3%a9requis">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<ul>
+<li><strong>Kali Linux</strong> installé (ou en live USB)</li>
+<li><strong>Carte WiFi</strong> compatible avec le mode monitor (ex: Alfa AWUS036ACH)</li>
+<li><strong>Connaissances de base</strong> en réseau et Linux</li>
+</ul>
+<hr>
+<h2 id="-installation-des-outils">
+  🔧 Installation des outils
+  <a class="heading-link" href="#-installation-des-outils">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<p>Kali Linux intègre déjà la plupart des outils nécessaires. Voici les principaux :</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># Vérifier les outils installés</span>
+</span></span><span class="line"><span class="cl">airmon-ng --version
+</span></span><span class="line"><span class="cl">airodump-ng --version
+</span></span><span class="line"><span class="cl">aireplay-ng --version
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Mettre à jour les outils</span>
+</span></span><span class="line"><span class="cl">sudo apt update <span class="o">&amp;&amp;</span> sudo apt upgrade -y</span></span></code></pre></div>
+<hr>
+<h2 id="-phase-1--mise-en-mode-monitor">
+  📡 Phase 1 : Mise en mode monitor
+  <a class="heading-link" href="#-phase-1--mise-en-mode-monitor">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<p>La première étape consiste à passer votre carte WiFi en mode monitor :</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># Lister les interfaces réseau</span>
+</span></span><span class="line"><span class="cl">sudo iwconfig
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Démarrer le mode monitor</span>
+</span></span><span class="line"><span class="cl">sudo airmon-ng start wlan0
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Vérifier que l&#39;interface est en mode monitor</span>
+</span></span><span class="line"><span class="cl">sudo iwconfig wlan0mon</span></span></code></pre></div>
+<hr>
+<h2 id="-phase-2--scan-des-réseaux">
+  📊 Phase 2 : Scan des réseaux
+  <a class="heading-link" href="#-phase-2--scan-des-r%c3%a9seaux">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<p>Une fois en mode monitor, nous allons scanner les réseaux disponibles :</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># Démarrer le scan</span>
+</span></span><span class="line"><span class="cl">sudo airodump-ng wlan0mon
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Pour capturer plus d&#39;informations sur un réseau spécifique</span>
+</span></span><span class="line"><span class="cl">sudo airodump-ng -c <span class="m">6</span> --bssid 00:11:22:33:44:55 -w capture wlan0mon</span></span></code></pre></div>
+<p><strong>Explication des options :</strong></p>
+<ul>
+<li><code>-c 6</code> : Canal du réseau cible</li>
+<li><code>--bssid</code> : Adresse MAC du routeur</li>
+<li><code>-w capture</code> : Nom du fichier de capture</li>
+</ul>
+<hr>
+<h2 id="-phase-3--capture-du-handshake-wpawpa2">
+  🎯 Phase 3 : Capture du handshake WPA/WPA2
+  <a class="heading-link" href="#-phase-3--capture-du-handshake-wpawpa2">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<p>Pour analyser un réseau sécurisé, nous devons capturer le <strong>handshake WPA/WPA2</strong> :</p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># Capturer le handshake</span>
+</span></span><span class="line"><span class="cl">sudo airodump-ng -c <span class="m">6</span> --bssid 00:11:22:33:44:55 -w capture wlan0mon
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Déauthentifier un client pour forcer la reconnexion</span>
+</span></span><span class="line"><span class="cl">sudo aireplay-ng -0 <span class="m">2</span> -a 00:11:22:33:44:55 wlan0mon</span></span></code></pre></div>
+<blockquote>
+<p>⚠️ <strong>Important :</strong> Cette étape est légale uniquement sur vos propres réseaux ou avec autorisation explicite.</p>
+</blockquote>
+<hr>
+<h2 id="-phase-4--sécurisation">
+  🔐 Phase 4 : Sécurisation
+  <a class="heading-link" href="#-phase-4--s%c3%a9curisation">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<p>Voici les <strong>bonnes pratiques</strong> pour sécuriser votre réseau WiFi :</p>
+<h3 id="-recommandations-essentielles">
+  ✅ Recommandations essentielles
+  <a class="heading-link" href="#-recommandations-essentielles">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h3>
+<table>
+	<thead>
+			<tr>
+					<th>Recommandation</th>
+					<th>Détail</th>
+			</tr>
+	</thead>
+	<tbody>
+			<tr>
+					<td><strong>WPA3</strong></td>
+					<td>Utiliser WPA3 si disponible</td>
+			</tr>
+			<tr>
+					<td><strong>Mot de passe fort</strong></td>
+					<td>Minimum 12 caractères avec symboles</td>
+			</tr>
+			<tr>
+					<td><strong>Désactiver WPS</strong></td>
+					<td>Vulnérabilité connue</td>
+			</tr>
+			<tr>
+					<td><strong>Changer le SSID</strong></td>
+					<td>Éviter le nom par défaut</td>
+			</tr>
+			<tr>
+					<td><strong>Mise à jour firmware</strong></td>
+					<td>Maintenir le routeur à jour</td>
+			</tr>
+	</tbody>
+</table>
+<h3 id="-vérification-de-la-sécurité">
+  🛡️ Vérification de la sécurité
+  <a class="heading-link" href="#-v%c3%a9rification-de-la-s%c3%a9curit%c3%a9">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># Vérifier les vulnérabilités de votre réseau</span>
+</span></span><span class="line"><span class="cl">sudo wash -i wlan0mon  <span class="c1"># Détecter les WPS actifs</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Analyser les clients connectés</span>
+</span></span><span class="line"><span class="cl">sudo airodump-ng -c <span class="m">6</span> --bssid 00:11:22:33:44:55 wlan0mon</span></span></code></pre></div>
+<hr>
+<h2 id="-conclusion">
+  🎯 Conclusion
+  <a class="heading-link" href="#-conclusion">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<p>L&rsquo;audit WiFi avec Kali Linux est une compétence essentielle pour tout professionnel de la <strong>cybersécurité</strong>. En comprenant les vulnérabilités des réseaux sans fil, vous pouvez mieux les protéger.</p>
+<h3 id="-pour-aller-plus-loin">
+  📚 Pour aller plus loin
+  <a class="heading-link" href="#-pour-aller-plus-loin">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h3>
+<ul>
+<li>📖 <strong>The Web Application Hacker&rsquo;s Handbook</strong> - Dafydd Stuttard</li>
+<li>🏆 <strong>HackTheBox</strong> - Challenges WiFi</li>
+<li>🎥 <strong>YouTube</strong> - Tutoriels pratiques</li>
+</ul>
+<hr>
+<h2 id="-ressources">
+  📡 Ressources
+  <a class="heading-link" href="#-ressources">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<ul>
+<li><a href="https://www.kali.org/docs/"  class="external-link" target="_blank" rel="noopener">Kali Linux Documentation</a></li>
+<li><a href="https://www.aircrack-ng.org/"  class="external-link" target="_blank" rel="noopener">Aircrack-ng Guide</a></li>
+<li><a href="https://owasp.org/"  class="external-link" target="_blank" rel="noopener">OWASP WiFi Security</a></li>
+</ul>
+<hr>
+<blockquote>
+<p><em>&ldquo;La sécurité n&rsquo;est pas un produit, c&rsquo;est un processus.&rdquo;</em> — Bruce Schneier</p>
+</blockquote>
+<hr>
+<p><em>Merci d&rsquo;avoir lu cet article ! N&rsquo;hésitez pas à partager vos retours.</em> 🔒</p>
+
+      </div>
+
+
+      <footer>
+        
+
+
+        
+        
+        
+        
+        
+        
+        
+      </footer>
+    </article>
+
+    
+  </section>
+
+    </div>
+
+    <footer class="footer">
+  <section class="container">
+    ©
+    
+    2026
+     Marcel BATELA 
+    ·
+    
+    Propulsé par <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/" target="_blank" rel="noopener">Coder</a>.
+    
+  </section>
+</footer>
+
+  </main>
+
+  
+
+  
+  
+  <script src="/js/coder.js"></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+
+</html>

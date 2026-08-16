@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+	<channel>
+		<title>Infrastructure on Cybersécurité</title>
+		<link>http://localhost:1313/tags/infrastructure/</link>
+		<description>Recent content in Infrastructure on Cybersécurité</description>
+		<generator>Hugo</generator>
+		<language>fr</language>
+		
+		
+		
+		
+			<lastBuildDate>Sun, 16 Aug 2026 00:00:00 +0000</lastBuildDate>
+		
+			<atom:link href="http://localhost:1313/tags/infrastructure/index.xml" rel="self" type="application/rss+xml" />
+			<item>
+				<title>Audit WiFi &amp; Serveur DHCP/DNS/NAT avec Kali Linux et Dnsmasq</title>
+				<link>http://localhost:1313/posts/serveur-dhcp-dns-nat-dnsmasq/</link>
+				<pubDate>Sun, 16 Aug 2026 00:00:00 +0000</pubDate>
+				<guid>http://localhost:1313/posts/serveur-dhcp-dns-nat-dnsmasq/</guid>
+				<description>&lt;h1 id=&#34;-serveur-dhcpdnsnat-avec-dnsmasq&#34;&gt;&#xA;  📡 Serveur DHCP/DNS/NAT avec Dnsmasq&#xA;  &lt;a class=&#34;heading-link&#34; href=&#34;#-serveur-dhcpdnsnat-avec-dnsmasq&#34;&gt;&#xA;    &lt;i class=&#34;fa-solid fa-link&#34; aria-hidden=&#34;true&#34; title=&#34;Link to heading&#34;&gt;&lt;/i&gt;&#xA;    &lt;span class=&#34;sr-only&#34;&gt;Link to heading&lt;/span&gt;&#xA;  &lt;/a&gt;&#xA;&lt;/h1&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;em&gt;&amp;ldquo;Un serveur bien configuré est la base d&amp;rsquo;une infrastructure réseau fiable.&amp;rdquo;&lt;/em&gt;&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;hr&gt;&#xA;&lt;h3 id=&#34;-introduction&#34;&gt;&#xA;  🔍 Introduction&#xA;  &lt;a class=&#34;heading-link&#34; href=&#34;#-introduction&#34;&gt;&#xA;    &lt;i class=&#34;fa-solid fa-link&#34; aria-hidden=&#34;true&#34; title=&#34;Link to heading&#34;&gt;&lt;/i&gt;&#xA;    &lt;span class=&#34;sr-only&#34;&gt;Link to heading&lt;/span&gt;&#xA;  &lt;/a&gt;&#xA;&lt;/h3&gt;&#xA;&lt;p&gt;La mise en place d&amp;rsquo;un serveur &lt;strong&gt;DHCP + DNS + NAT&lt;/strong&gt; est une compétence essentielle pour tout administrateur réseau. Avec &lt;strong&gt;Dnsmasq&lt;/strong&gt;, nous allons créer un serveur tout-en-un léger et performant.&lt;/p&gt;&#xA;&lt;p&gt;Dans cette deuxième partie, je vous guide pas à pas pour configurer votre propre serveur avec un domaine personnalisé.&lt;/p&gt;</description>
+			</item>
+	</channel>
+</rss>

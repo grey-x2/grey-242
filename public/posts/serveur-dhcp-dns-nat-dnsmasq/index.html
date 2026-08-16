@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <title>
+  Audit WiFi &amp; Serveur DHCP/DNS/NAT avec Kali Linux et Dnsmasq · Cybersécurité
+</title>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light dark">
+
+
+
+
+<meta name="author" content="Marcel BATELA">
+<meta name="description" content="
+  📡 Serveur DHCP/DNS/NAT avec Dnsmasq
+  
+    
+    Link to heading
+  
+
+
+&ldquo;Un serveur bien configuré est la base d&rsquo;une infrastructure réseau fiable.&rdquo;
+
+
+
+  🔍 Introduction
+  
+    
+    Link to heading
+  
+
+La mise en place d&rsquo;un serveur DHCP &#43; DNS &#43; NAT est une compétence essentielle pour tout administrateur réseau. Avec Dnsmasq, nous allons créer un serveur tout-en-un léger et performant.
+Dans cette deuxième partie, je vous guide pas à pas pour configurer votre propre serveur avec un domaine personnalisé.">
+<meta name="keywords" content="informatique,cybersécurité,réseau,linux,windows,technologies,cve">
+
+
+
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="Audit WiFi & Serveur DHCP/DNS/NAT avec Kali Linux et Dnsmasq">
+	<meta name="twitter:description" content="📡 Serveur DHCP/DNS/NAT avec Dnsmasq Link to heading “Un serveur bien configuré est la base d’une infrastructure réseau fiable.”
+🔍 Introduction Link to heading La mise en place d’un serveur DHCP &#43; DNS &#43; NAT est une compétence essentielle pour tout administrateur réseau. Avec Dnsmasq, nous allons créer un serveur tout-en-un léger et performant.
+Dans cette deuxième partie, je vous guide pas à pas pour configurer votre propre serveur avec un domaine personnalisé.">
+
+<meta property="og:url" content="http://localhost:1313/posts/serveur-dhcp-dns-nat-dnsmasq/">
+	<meta property="og:site_name" content="Cybersécurité">
+	<meta property="og:title" content="Audit WiFi & Serveur DHCP/DNS/NAT avec Kali Linux et Dnsmasq">
+	<meta property="og:description" content="📡 Serveur DHCP/DNS/NAT avec Dnsmasq Link to heading “Un serveur bien configuré est la base d’une infrastructure réseau fiable.”
+🔍 Introduction Link to heading La mise en place d’un serveur DHCP &#43; DNS &#43; NAT est une compétence essentielle pour tout administrateur réseau. Avec Dnsmasq, nous allons créer un serveur tout-en-un léger et performant.
+Dans cette deuxième partie, je vous guide pas à pas pour configurer votre propre serveur avec un domaine personnalisé.">
+	<meta property="og:locale" content="fr">
+	<meta property="og:type" content="article">
+		<meta property="article:section" content="posts">
+		<meta property="article:published_time" content="2026-08-16T00:00:00+00:00">
+		<meta property="article:modified_time" content="2026-08-16T00:00:00+00:00">
+		<meta property="article:tag" content="Wifi">
+		<meta property="article:tag" content="Kali">
+		<meta property="article:tag" content="Pentest">
+		<meta property="article:tag" content="Réseau">
+		<meta property="article:tag" content="Dhcp">
+		<meta property="article:tag" content="Dns">
+
+
+
+
+<link rel="canonical" href="http://localhost:1313/posts/serveur-dhcp-dns-nat-dnsmasq/">
+
+
+<link rel="preload" href="/fonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/fa-regular-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
+
+
+  
+  
+  <link rel="stylesheet" href="/css/coder.css" media="screen">
+
+
+
+
+
+
+  
+    
+    
+    <link rel="stylesheet" href="/css/coder-dark.css" media="screen">
+  
+
+
+
+ 
+
+
+
+
+<link rel="icon" type="image/svg+xml" href="/images/favicon.svg" sizes="any">
+<link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
+<link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
+
+<link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#5bbad5">
+
+
+
+
+
+
+
+
+
+
+</head>
+
+
+
+
+
+
+<body class="preload-transitions colorscheme-auto">
+  
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="fa-solid fa-adjust fa-fw" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+  <main class="wrapper">
+    <nav class="navigation">
+  <section class="container">
+    
+    <a class="navigation-title" href="http://localhost:1313/">
+      Cybersécurité
+    </a>
+    
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fa-solid fa-bars fa-fw" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/about/">A Propos</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/posts/">Blog</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/videos/">Vidéos</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/projects/">Projets</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link " href="/contact/">Contactez-moi</a>
+            </li>
+          
+        
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+    <div class="content">
+      
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">
+            <a class="title-link" href="http://localhost:1313/posts/serveur-dhcp-dns-nat-dnsmasq/">
+              Audit WiFi &amp; Serveur DHCP/DNS/NAT avec Kali Linux et Dnsmasq
+            </a>
+          </h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fa-solid fa-calendar" aria-hidden="true"></i>
+              <time datetime="2026-08-16T00:00:00Z">
+                Décembre 160, 16168
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fa-solid fa-clock" aria-hidden="true"></i>
+              5 minutes de lecture
+            </span>
+          </div>
+          
+          <div class="categories">
+  <i class="fa-solid fa-folder" aria-hidden="true"></i>
+    <a href="/categories/cybers%C3%A9curit%C3%A9/">Cybersécurité</a>
+      <span class="separator">•</span>
+    <a href="/categories/r%C3%A9seau/">Réseau</a>
+      <span class="separator">•</span>
+    <a href="/categories/infrastructure/">Infrastructure</a>
+      <span class="separator">•</span>
+    <a href="/categories/linux/">Linux</a>
+      <span class="separator">•</span>
+    <a href="/categories/pentest/">Pentest</a></div>
+
+          <div class="tags">
+  <i class="fa-solid fa-tag" aria-hidden="true"></i>
+    <span class="tag">
+      <a href="/tags/wifi/">Wifi</a>
+    </span>
+      <span class="separator">•</span>
+    <span class="tag">
+      <a href="/tags/kali/">Kali</a>
+    </span>
+      <span class="separator">•</span>
+    <span class="tag">
+      <a href="/tags/pentest/">Pentest</a>
+    </span>
+      <span class="separator">•</span>
+    <span class="tag">
+      <a href="/tags/r%C3%A9seau/">Réseau</a>
+    </span>
+      <span class="separator">•</span>
+    <span class="tag">
+      <a href="/tags/dhcp/">Dhcp</a>
+    </span>
+      <span class="separator">•</span>
+    <span class="tag">
+      <a href="/tags/dns/">Dns</a>
+    </span>
+      <span class="separator">•</span>
+    <span class="tag">
+      <a href="/tags/nat/">Nat</a>
+    </span>
+      <span class="separator">•</span>
+    <span class="tag">
+      <a href="/tags/dnsmasq/">Dnsmasq</a>
+    </span>
+      <span class="separator">•</span>
+    <span class="tag">
+      <a href="/tags/linux/">Linux</a>
+    </span>
+      <span class="separator">•</span>
+    <span class="tag">
+      <a href="/tags/infrastructure/">Infrastructure</a>
+    </span>
+      <span class="separator">•</span>
+    <span class="tag">
+      <a href="/tags/s%C3%A9curit%C3%A9/">Sécurité</a>
+    </span></div>
+
+        </div>
+      </header>
+
+      
+
+
+      <div class="post-content">
+        
+        <h1 id="-serveur-dhcpdnsnat-avec-dnsmasq">
+  📡 Serveur DHCP/DNS/NAT avec Dnsmasq
+  <a class="heading-link" href="#-serveur-dhcpdnsnat-avec-dnsmasq">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h1>
+<blockquote>
+<p><em>&ldquo;Un serveur bien configuré est la base d&rsquo;une infrastructure réseau fiable.&rdquo;</em></p>
+</blockquote>
+<hr>
+<h3 id="-introduction">
+  🔍 Introduction
+  <a class="heading-link" href="#-introduction">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h3>
+<p>La mise en place d&rsquo;un serveur <strong>DHCP + DNS + NAT</strong> est une compétence essentielle pour tout administrateur réseau. Avec <strong>Dnsmasq</strong>, nous allons créer un serveur tout-en-un léger et performant.</p>
+<p>Dans cette deuxième partie, je vous guide pas à pas pour configurer votre propre serveur avec un domaine personnalisé.</p>
+<hr>
+<h3 id="-prérequis">
+  🛠️ Prérequis
+  <a class="heading-link" href="#-pr%c3%a9requis">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h3>
+<ul>
+<li><strong>Linux</strong> (Debian/Ubuntu)</li>
+<li><strong>Deux interfaces réseau</strong> :
+<ul>
+<li><code>eth0</code> : Connexion Internet (WAN)</li>
+<li><code>eth1</code> : Réseau local (LAN)</li>
+</ul>
+</li>
+<li><strong>Accès root</strong> (sudo)</li>
+<li><strong>Connaissances de base</strong> en réseau et Linux</li>
+</ul>
+<hr>
+<h3 id="-étape-1--configuration-des-interfaces">
+  🔧 Étape 1 : Configuration des interfaces
+  <a class="heading-link" href="#-%c3%a9tape-1--configuration-des-interfaces">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h3>
+<p><strong>Fichier :</strong> <code>/etc/network/interfaces</code></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># Interface WAN (eth0) - DHCP</span>
+</span></span><span class="line"><span class="cl">auto eth0
+</span></span><span class="line"><span class="cl">iface eth0 inet dhcp
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Interface LAN (eth1) - Statique</span>
+</span></span><span class="line"><span class="cl">auto eth1
+</span></span><span class="line"><span class="cl">iface eth1 inet static
+</span></span><span class="line"><span class="cl">    address 10.0.0.1
+</span></span><span class="line"><span class="cl">    netmask 255.255.255.0
+</span></span><span class="line"><span class="cl">    network 10.0.0.0
+</span></span><span class="line"><span class="cl">    broadcast 10.0.0.255</span></span></code></pre></div>
+<p><strong>Redémarrer les interfaces :</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo systemctl restart networking
+</span></span><span class="line"><span class="cl"><span class="c1"># ou</span>
+</span></span><span class="line"><span class="cl">sudo ifdown eth0 eth1 <span class="o">&amp;&amp;</span> sudo ifup eth0 eth1</span></span></code></pre></div>
+<hr>
+<h3 id="-étape-2--installation-de-dnsmasq">
+  📦 Étape 2 : Installation de Dnsmasq
+  <a class="heading-link" href="#-%c3%a9tape-2--installation-de-dnsmasq">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># Mise à jour</span>
+</span></span><span class="line"><span class="cl">sudo apt update
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Installation</span>
+</span></span><span class="line"><span class="cl">sudo apt install dnsmasq -y
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Vérification</span>
+</span></span><span class="line"><span class="cl">dnsmasq --version</span></span></code></pre></div>
+<hr>
+<h3 id="-étape-3--configuration-de-dnsmasq">
+  ⚙️ Étape 3 : Configuration de Dnsmasq
+  <a class="heading-link" href="#-%c3%a9tape-3--configuration-de-dnsmasq">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h3>
+<p><strong>Sauvegarder la configuration par défaut :</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo mv /etc/dnsmasq.conf /etc/dnsmasq.conf.backup
+</span></span><span class="line"><span class="cl">sudo nano /etc/dnsmasq.conf</span></span></code></pre></div>
+<p><strong>Configuration complète :</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># ==========================================</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># CONFIGURATION DNSMASQ</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Serveur DHCP + DNS + NAT</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Domaine : atte-thm.cg</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># ==========================================</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># ---------- INTERFACE ----------</span>
+</span></span><span class="line"><span class="cl"><span class="nv">interface</span><span class="o">=</span>eth1
+</span></span><span class="line"><span class="cl">listen-address<span class="o">=</span>10.0.0.1
+</span></span><span class="line"><span class="cl">bind-interfaces
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># ---------- DHCP ----------</span>
+</span></span><span class="line"><span class="cl">dhcp-range<span class="o">=</span>10.0.0.10,10.0.0.200,12h
+</span></span><span class="line"><span class="cl">dhcp-option<span class="o">=</span>3,10.0.0.1          <span class="c1"># Passerelle</span>
+</span></span><span class="line"><span class="cl">dhcp-option<span class="o">=</span>6,10.0.0.1          <span class="c1"># DNS</span>
+</span></span><span class="line"><span class="cl">dhcp-option<span class="o">=</span>15,atte-thm.cg      <span class="c1"># Domaine</span>
+</span></span><span class="line"><span class="cl">dhcp-leasefile<span class="o">=</span>/var/lib/misc/dnsmasq.leases
+</span></span><span class="line"><span class="cl">dhcp-authoritative
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># ---------- DNS ----------</span>
+</span></span><span class="line"><span class="cl"><span class="nv">domain</span><span class="o">=</span>atte-thm.cg
+</span></span><span class="line"><span class="cl">expand-hosts
+</span></span><span class="line"><span class="cl"><span class="nv">local</span><span class="o">=</span>/atte-thm.cg/
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># ---------- Enregistrements DNS ----------</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Serveur</span>
+</span></span><span class="line"><span class="cl"><span class="nv">address</span><span class="o">=</span>/server.atte-thm.cg/10.0.0.1
+</span></span><span class="line"><span class="cl"><span class="nv">address</span><span class="o">=</span>/srv.atte-thm.cg/10.0.0.1
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Services</span>
+</span></span><span class="line"><span class="cl"><span class="nv">address</span><span class="o">=</span>/www.atte-thm.cg/10.0.0.1
+</span></span><span class="line"><span class="cl"><span class="nv">address</span><span class="o">=</span>/mail.atte-thm.cg/10.0.0.1
+</span></span><span class="line"><span class="cl"><span class="nv">address</span><span class="o">=</span>/ftp.atte-thm.cg/10.0.0.1
+</span></span><span class="line"><span class="cl"><span class="nv">address</span><span class="o">=</span>/vpn.atte-thm.cg/10.0.0.1
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Clients statiques (optionnel)</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># dhcp-host=00:11:22:33:44:55,client1,10.0.0.10,infinite</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># dhcp-host=00:11:22:33:44:66,client2,10.0.0.11,infinite</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># ---------- Serveurs DNS externes ----------</span>
+</span></span><span class="line"><span class="cl">no-resolv
+</span></span><span class="line"><span class="cl"><span class="nv">server</span><span class="o">=</span>1.1.1.1          <span class="c1"># Cloudflare</span>
+</span></span><span class="line"><span class="cl"><span class="nv">server</span><span class="o">=</span>1.0.0.1          <span class="c1"># Cloudflare</span>
+</span></span><span class="line"><span class="cl"><span class="nv">server</span><span class="o">=</span>8.8.8.8          <span class="c1"># Google</span>
+</span></span><span class="line"><span class="cl"><span class="nv">server</span><span class="o">=</span>8.8.4.4          <span class="c1"># Google</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># ---------- Cache ----------</span>
+</span></span><span class="line"><span class="cl">cache-size<span class="o">=</span><span class="m">1000</span>
+</span></span><span class="line"><span class="cl">neg-ttl<span class="o">=</span><span class="m">60</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># ---------- Logs ----------</span>
+</span></span><span class="line"><span class="cl">log-queries
+</span></span><span class="line"><span class="cl">log-facility<span class="o">=</span>/var/log/dnsmasq.log
+</span></span><span class="line"><span class="cl">log-async
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># ---------- Sécurité ----------</span>
+</span></span><span class="line"><span class="cl">domain-needed
+</span></span><span class="line"><span class="cl">bogus-priv</span></span></code></pre></div>
+<p><strong>Redémarrer Dnsmasq :</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo systemctl restart dnsmasq
+</span></span><span class="line"><span class="cl">sudo systemctl status dnsmasq</span></span></code></pre></div>
+<hr>
+<h3 id="-étape-4--configuration-du-nat">
+  🔥 Étape 4 : Configuration du NAT
+  <a class="heading-link" href="#-%c3%a9tape-4--configuration-du-nat">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h3>
+<p><strong>Activer le forwarding IP :</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># Temporaire</span>
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> <span class="m">1</span> <span class="p">|</span> sudo tee /proc/sys/net/ipv4/ip_forward
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Permanent</span>
+</span></span><span class="line"><span class="cl">sudo nano /etc/sysctl.conf
+</span></span><span class="line"><span class="cl"><span class="c1"># Ajouter : net.ipv4.ip_forward=1</span>
+</span></span><span class="line"><span class="cl">sudo sysctl -p</span></span></code></pre></div>
+<p><strong>Configurer iptables (NAT) :</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># NAT (Masquerade)</span>
+</span></span><span class="line"><span class="cl">sudo iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Forwarding</span>
+</span></span><span class="line"><span class="cl">sudo iptables -A FORWARD -i eth0 -o eth1 -m state --state RELATED,ESTABLISHED -j ACCEPT
+</span></span><span class="line"><span class="cl">sudo iptables -A FORWARD -i eth1 -o eth0 -j ACCEPT</span></span></code></pre></div>
+<p><strong>Sauvegarder les règles :</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo apt install iptables-persistent -y
+</span></span><span class="line"><span class="cl">sudo netfilter-persistent save</span></span></code></pre></div>
+<hr>
+<h3 id="-étape-5--tester-et-vérifier">
+  🚀 Étape 5 : Tester et vérifier
+  <a class="heading-link" href="#-%c3%a9tape-5--tester-et-v%c3%a9rifier">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h3>
+<p><strong>Tester le DHCP :</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># Depuis un client</span>
+</span></span><span class="line"><span class="cl">sudo dhclient -v eth1
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Voir les leases</span>
+</span></span><span class="line"><span class="cl">sudo cat /var/lib/misc/dnsmasq.leases</span></span></code></pre></div>
+<p><strong>Tester la résolution DNS :</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># Depuis le serveur</span>
+</span></span><span class="line"><span class="cl">nslookup server.atte-thm.cg 10.0.0.1
+</span></span><span class="line"><span class="cl">dig server.atte-thm.cg @10.0.0.1
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Depuis un client</span>
+</span></span><span class="line"><span class="cl">ping -c <span class="m">4</span> server.atte-thm.cg
+</span></span><span class="line"><span class="cl">ping -c <span class="m">4</span> www.atte-thm.cg</span></span></code></pre></div>
+<p><strong>Tester le NAT :</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># Depuis un client</span>
+</span></span><span class="line"><span class="cl">ping -c <span class="m">4</span> 8.8.8.8
+</span></span><span class="line"><span class="cl">ping -c <span class="m">4</span> google.com
+</span></span><span class="line"><span class="cl">curl -I http://google.com</span></span></code></pre></div>
+<hr>
+<h3 id="-vérification-complète">
+  📊 Vérification complète
+  <a class="heading-link" href="#-v%c3%a9rification-compl%c3%a8te">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h3>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="nb">echo</span> <span class="s2">&#34;=== VÉRIFICATION DU SERVEUR ===&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> -e <span class="s2">&#34;\n🔍 Services :&#34;</span>
+</span></span><span class="line"><span class="cl">sudo systemctl status dnsmasq --no-pager
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> -e <span class="s2">&#34;\n🔍 Forwarding IP :&#34;</span>
+</span></span><span class="line"><span class="cl">cat /proc/sys/net/ipv4/ip_forward
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> -e <span class="s2">&#34;\n🔍 Règles NAT :&#34;</span>
+</span></span><span class="line"><span class="cl">sudo iptables -t nat -L -v <span class="p">|</span> grep MASQUERADE
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> -e <span class="s2">&#34;\n🔍 Leases DHCP :&#34;</span>
+</span></span><span class="line"><span class="cl">sudo cat /var/lib/misc/dnsmasq.leases
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> -e <span class="s2">&#34;\n🔍 Résolution DNS :&#34;</span>
+</span></span><span class="line"><span class="cl">dig server.atte-thm.cg @10.0.0.1 +short
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> -e <span class="s2">&#34;\n🔍 Connectivité Internet :&#34;</span>
+</span></span><span class="line"><span class="cl">ping -c <span class="m">2</span> 8.8.8.8
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nb">echo</span> -e <span class="s2">&#34;\n=== VÉRIFICATION TERMINÉE ===&#34;</span></span></span></code></pre></div>
+<hr>
+<h3 id="-dépannage">
+  🔧 Dépannage
+  <a class="heading-link" href="#-d%c3%a9pannage">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h3>
+<p><strong>Problème : Le DHCP ne fonctionne pas</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># Vérifier les logs</span>
+</span></span><span class="line"><span class="cl">sudo tail -f /var/log/dnsmasq.log
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Tester la configuration</span>
+</span></span><span class="line"><span class="cl">sudo dnsmasq --test
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Redémarrer</span>
+</span></span><span class="line"><span class="cl">sudo systemctl restart dnsmasq</span></span></code></pre></div>
+<p><strong>Problème : Le NAT ne fonctionne pas</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># Vérifier le forwarding</span>
+</span></span><span class="line"><span class="cl">cat /proc/sys/net/ipv4/ip_forward
+</span></span><span class="line"><span class="cl"><span class="c1"># Doit afficher 1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Vérifier les règles</span>
+</span></span><span class="line"><span class="cl">sudo iptables -t nat -L -v
+</span></span><span class="line"><span class="cl">sudo iptables -L FORWARD -v</span></span></code></pre></div>
+<p><strong>Problème : DNS ne résout pas</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl"><span class="c1"># Vérifier resolv.conf</span>
+</span></span><span class="line"><span class="cl">cat /etc/resolv.conf
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Tester directement</span>
+</span></span><span class="line"><span class="cl">nslookup google.com 10.0.0.1</span></span></code></pre></div>
+<hr>
+<h3 id="-sécurisation-du-serveur">
+  🔐 Sécurisation du serveur
+  <a class="heading-link" href="#-s%c3%a9curisation-du-serveur">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h3>
+<p><strong>Pare-feu UFW :</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo apt install ufw -y
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Autoriser les services</span>
+</span></span><span class="line"><span class="cl">sudo ufw allow 53/tcp   <span class="c1"># DNS</span>
+</span></span><span class="line"><span class="cl">sudo ufw allow 53/udp   <span class="c1"># DNS</span>
+</span></span><span class="line"><span class="cl">sudo ufw allow 67/udp   <span class="c1"># DHCP</span>
+</span></span><span class="line"><span class="cl">sudo ufw allow 68/udp   <span class="c1"># DHCP</span>
+</span></span><span class="line"><span class="cl">sudo ufw allow 22/tcp   <span class="c1"># SSH</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Activer</span>
+</span></span><span class="line"><span class="cl">sudo ufw enable</span></span></code></pre></div>
+<p><strong>Sécuriser SSH :</strong></p>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo nano /etc/ssh/sshd_config</span></span></code></pre></div>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">Port <span class="m">2222</span>
+</span></span><span class="line"><span class="cl">PermitRootLogin no
+</span></span><span class="line"><span class="cl">PasswordAuthentication no
+</span></span><span class="line"><span class="cl">PubkeyAuthentication yes</span></span></code></pre></div>
+<div class="highlight"><pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">sudo systemctl restart sshd</span></span></code></pre></div>
+<hr>
+<h3 id="-pour-aller-plus-loin-serveur">
+  📚 Pour aller plus loin (Serveur)
+  <a class="heading-link" href="#-pour-aller-plus-loin-serveur">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h3>
+<ul>
+<li>🔒 Ajouter un serveur <strong>VPN</strong> (WireGuard/OpenVPN)</li>
+<li>📊 Mettre en place un <strong>monitoring</strong> (Grafana/Prometheus)</li>
+<li>🛡️ Configurer un <strong>pare-feu avancé</strong></li>
+<li>📝 Mettre en place des <strong>backups</strong></li>
+</ul>
+<hr>
+<h3 id="-ressources-serveur">
+  📡 Ressources (Serveur)
+  <a class="heading-link" href="#-ressources-serveur">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h3>
+<ul>
+<li><a href="https://thekelleys.org.uk/dnsmasq/doc.html"  class="external-link" target="_blank" rel="noopener">Documentation Dnsmasq</a></li>
+<li><a href="https://netfilter.org/documentation/"  class="external-link" target="_blank" rel="noopener">Guide iptables</a></li>
+<li><a href="https://www.linuxfoundation.org/"  class="external-link" target="_blank" rel="noopener">Sécurisation Linux</a></li>
+</ul>
+<hr>
+<h2 id="-conclusion">
+  🎯 Conclusion
+  <a class="heading-link" href="#-conclusion">
+    <i class="fa-solid fa-link" aria-hidden="true" title="Link to heading"></i>
+    <span class="sr-only">Link to heading</span>
+  </a>
+</h2>
+<p>Vous avez maintenant les compétences pour :</p>
+<p>✅ <strong>Auditer</strong> vos réseaux WiFi avec Kali Linux<br>
+✅ <strong>Sécuriser</strong> vos réseaux sans fil<br>
+✅ <strong>Configurer</strong> un serveur DHCP + DNS + NAT avec Dnsmasq<br>
+✅ <strong>Tester</strong> et <strong>dépanner</strong> votre infrastructure</p>
+<hr>
+<blockquote>
+<p><em>&ldquo;La sécurité et l&rsquo;infrastructure sont les piliers d&rsquo;un système fiable.&rdquo;</em> 🔒</p>
+</blockquote>
+<p><em>Merci d&rsquo;avoir lu cet article ! N&rsquo;hésitez pas à partager vos retours.</em> 🔒</p>
+
+      </div>
+
+
+      <footer>
+        
+
+
+        
+        
+        
+        
+        
+        
+        
+      </footer>
+    </article>
+
+    
+  </section>
+
+    </div>
+
+    <footer class="footer">
+  <section class="container">
+    ©
+    
+    2026
+     Marcel BATELA 
+    ·
+    
+    Propulsé par <a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/" target="_blank" rel="noopener">Coder</a>.
+    
+  </section>
+</footer>
+
+  </main>
+
+  
+
+  
+  
+  <script src="/js/coder.js"></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+</body>
+
+</html>
