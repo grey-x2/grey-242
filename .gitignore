@@ -1,0 +1,14 @@
+# Fichiers sensibles
+.env
+*.key
+*.pem
+*.crt
+
+# Fichiers temporaires
+public/
+resources/
+.hugo_build.lock
+
+# IDE
+.vscode/
+.idea/
